@@ -9,7 +9,7 @@ module.exports = generators.Base.extend({
 
     prompting: function() {
         this.log(yosay(
-            'Welcome to the slick ' + chalk.red.bold('Prodigious Helix') + ' generator!'
+            'Welcome to '+ chalk.red.bold('Jimmy\'s Helix') + ' generator!'
         ));
 
         console.log('INFO: .NET Framework 4.5');
@@ -28,8 +28,8 @@ module.exports = generators.Base.extend({
             message: 'Enter the name of your Feature module:'
         }, {
             type: 'confirm',
-            name: 'createTdsProject',
-            message: 'Create TDS Master project?:',
+            name: 'createUnicornConfig',
+            message: 'Create Unicorn serialization file?:',
             default: true
         }]).then(function(answers) {
             this.props = answers;
@@ -57,39 +57,42 @@ module.exports = generators.Base.extend({
         // AssemblyInfo.cs, project
         this.fs.copyTpl(
             this.templatePath('AssemblyInfo.cs'),
-            this.destinationPath(path.join(targetPath, 'code', 'Properties', 'AssemblyInfo.cs')), { assemblyName: this.props.solutionName + '.Feature.' + this.props.featureTitle }
+            this.destinationPath(path.join(targetPath, 'code', 'Properties', 'AssemblyInfo.cs')), { 
+                assemblyName: this.props.solutionName + '.Feature.' + this.props.featureTitle 
+            }
         );
 
         // Publish Profile configuration
         this.fs.copyTpl(
             this.templatePath('Local.pubxml'),
-            this.destinationPath(path.join(targetPath, 'code', 'Properties/PublishProfiles', 'Local.pubxml')), { assemblyName: this.props.solutionName + '.Feature.' + this.props.featureTitle }
+            this.destinationPath(path.join(targetPath, 'code', 'Properties/PublishProfiles', 'Local.pubxml')), 
+            { 
+                assemblyName: this.props.solutionName + '.Feature.' + this.props.featureTitle 
+            }
         );
 
         // config
         this.fs.copyTpl(
             this.templatePath('Feature.config'),
-            this.destinationPath(path.join(targetPath, 'code', 'App_Config', 'Include/' + this.props.solutionName, 'Feature', 'Feature.' + this.props.featureTitle + '.config')),
+            this.destinationPath(path.join(targetPath, 'code', 'App_Config', 'Include/', 'Feature', 'Feature.' + this.props.featureTitle + '.config')),
             this.props
         );
 
-        // TDS Project
-        if (this.props.createTdsProject) {
-            this.fs.copy(
-                this.templatePath('tds/**/*'),
-                this.destinationPath(path.join(targetPath, 'tds'))
-            );
-
-            // tds csproj
+        if (this.props.createUnicornConfig) {
+            // unicorn
             this.fs.copyTpl(
-                this.templatePath('Tds.Master.scproj'),
-                this.destinationPath(path.join(targetPath,
-                    'tds',
-                    this.props.solutionName + '.Feature.' + this.props.featureTitle + '.Master',
-                    this.props.solutionName + '.Feature.' + this.props.featureTitle + '.Master.scproj')),
-                this.props
-            );
+                this.templatePath('Serialization.config'),
+                this.destinationPath(path.join(targetPath, 'code', 'App_Config', 'Include/', 'Feature', 'Feature.' + this.props.featureTitle + '.Serialization.config')),
+                {
+                    configurationName: this.props.featureTitle + ' Feature',
+                    configurationDesc: 'Serialised items from ' + this.props.solutionName + '.Feature.' + this.props.featureTitle,
+                    physicalRootPath: '$(serializationFolder)\\Feature\\' + this.props.featureTitle + '\\serialization',
+                    templatesSitecorePath: '/sitecore/templates/Feature/' + this.props.featureTitle,
+                    renderingsSitecorePath: '/sitecore/layout/Renderings/Feature/' + this.props.featureTitle
+                }
+            );    
         }
+        
     },
     end: function() {
         console.log('');
@@ -97,10 +100,13 @@ module.exports = generators.Base.extend({
         console.log('Your Feature module ' + chalk.red.bold(this.props.featureTitle) + ' has been created');
         console.log('');
         console.log('You will need to add your Feature project(s) to your Visual Studio solution.');
-        if (this.props.createTdsProject) {
-            console.log('You will need to add your TDS project(s) to your Visual Studio solution.');
-        }
         console.log('Then build and publish the Feature project from Visual Studio.');
         console.log('');
+        if (this.props.createUnicornConfig) {
+            console.log('Unicorn configuration has been created with default includes for the following paths in Sitecore:');
+            console.log('\t/sitecore/templates/Feature/' + this.props.featureTitle);
+            console.log('\t/sitecore/layout/Renderings/Feature/' + this.props.featureTitle);
+        }
+
     }
 });
