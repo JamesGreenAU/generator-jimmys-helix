@@ -106,6 +106,8 @@ module.exports = generators.Base.extend({
             console.log('Unicorn configuration has been created with default includes for the following paths in Sitecore:');
             console.log('\t/sitecore/templates/Feature/' + this.props.featureTitle);
             console.log('\t/sitecore/layout/Renderings/Feature/' + this.props.featureTitle);
+            console.log('');
+            console.log('Now would be a good time to add these paths in Sitecore');
         }
 
     }
