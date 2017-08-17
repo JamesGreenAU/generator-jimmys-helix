@@ -1,74 +1,39 @@
-# generator-prodigious-helix
+# generator-jimmys-helix
 > Yeoman generator for Sitecore Projects 
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-prodigious-helix using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+First, install [Yeoman](http://yeoman.io) and generator-jimmys-helix.  As this is still a very early work-in-progress, it's not in NPM (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
 npm install -g yo
-npm install -g generator-prodigious-helix
+```
+
+So use [NPM Link](https://docs.npmjs.com/cli/link) to install this generator by changing into the root of this repo and typing:
+
+```bash
+npm link 
 ```
 
 ## What is it?
-The purpose of prodigious-helix is to reduce the time when creating Sitecore projects following [Helix] guidelines
-
-## Project
-Execute the following command in an empty folder
-```bash
-yo prodigious-helix
-```
-It will create the initial scaffolding to start Sitecore-ing following Helix
-
-## Adding Features
-
-Execute in the root of your existing Sitecore source code:
-
-```bash
-yo prodigious-helix:feature
-```
-...then configure your project based on yeoman questions.
-
-
-## Adding TDS projects to existing Features
-
-Execute in the root of your existing Sitecore source code:
-
-```bash
-yo prodigious-helix:feature-tds
-```
-Yeoman will ask you the information of the existing project (Solution Name, Feature Name), Sitecore database and the new TDS project alias/name you want to use. The new TDS project will be named like: ```SolutionName.Feature.FeatureName.Alias ```
-
-## Adding Foundation Modules
-
-Execute in the root of your existing Sitecore source code:
-
-```bash
-yo prodigious-helix:foundation
-```
-...then configure your project based on yeoman questions.
-
-## Adding TDS projects to existing Foundation
-
-Execute in the root of your existing Sitecore source code:
-
-```bash
-yo prodigious-helix:foundation-tds
-```
-Yeoman will ask you the information of the existing project (Solution Name, Foundation Name), Sitecore database and the new TDS project alias/name you want to use. The new TDS project will be named like: ```SolutionName.Foundation.FoundationName.Alias ```
-
+The purpose of jimmys-helix is to reduce the time when creating Sitecore projects following [Helix] guidelines.
 
 ## Background
 
-This generator is based on [kamsar] yeoman [habitat generator] but this implementation is not tied to habitat project and has some extra features such as:
+This generator is based on [generator-prodigious-helix], which is based on [kamsar] yeoman [habitat generator], with a couple of differences:
 
-* Allows to create new Sitecore projects following [Helix] guidelines from scratch.
-* Allows to create TDS projects. 
-* Allows dynamic solution names.
-* Allows to select different .NET Frameworks (_under construction_).  
+* Uses Unicorn for serialisation rather than TDS
+* Uses a slightly different folder structure under App_Config to suit our installation. 
 
+## Unicorn
+
+The serialization config file created in the new module includes two predicate paths by default:
+ * '/sitecore/templates/Feature/YourNewModule' and
+ * '/sitecore/layout/Renderings/Feature/YourNewModule'
+
+These are intended to be potentially useful safe defaults.  You should update as per the module's requirements.
 
 [kamsar]: https://twitter.com/kamsar
 [habitat generator]: https://github.com/kamsar/generator-habitat/
 [Helix]: http://helix.sitecore.net/
-
+[generator-prodigious-helix]: https://github.com/mrodriguezr/generator-prodigious-helix
